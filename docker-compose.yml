@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  postegres:
+    image: postgres
+    container_name: postegres_trusted
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: trusted
+    ports:
+      - 5433:5432
+    volumes:
+      - ./.docker/data:/var/lib/postgresql/data

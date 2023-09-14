@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  id            Int       @id @default(autoincrement())
+  name          String
+  admissionDate DateTime
+  baseSalary    Float
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  projects      Project[]
+  tasks         Task[]
+}
+
+model Project {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  deletedAt   DateTime?
+  employees   Employee[]
+  tasks       Task[]
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  employee    Employee? @relation(fields: [employeeId], references: [id])
+  employeeId  Int?
+  project     Project?  @relation(fields: [projectId], references: [id])
+  projectId   Int?
+}
